@@ -25,6 +25,8 @@ function serverErr(code) {
     msg = 'Username has not been sent';
   } else if (code === '103') {
     msg = 'Address is not correct';
+  } else {
+    msg = 'Unknown error!'
   }
 
   return { 'code': code, 'message': msg };
@@ -43,7 +45,7 @@ function shortener(link) {
         username
       }
     })
-    .then(body => {
+    .then((body) => {
       if (body.length > 5) {
         result.shortUrl = body;
         return result;
@@ -51,7 +53,7 @@ function shortener(link) {
         throw serverErr(body);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (!result.shortUrl) {
         throw {
           code: 1,
@@ -63,5 +65,47 @@ function shortener(link) {
     });
 }
 
+function extra(link) {
+  let result = null;
+
+  return shortener(link)
+    .then((res) => {
+      result = res;
+      result.fileInfo = null;
+
+      return rp.head(link);
+    })
+    .then(header => {
+      if (typeof(header['content-length']) !== 'undefined') {
+        result.fileInfo = {};
+        result.fileInfo.contentLength = header['content-length'];
+        result.fileInfo.sizeInMB = pretty(result.fileInfo.contentLength);
+
+        const parsedUrl = url.parse(link);
+        const fileName = parsedUrl.path.replace(parsedUrl.search, '')
+          .split('/').pop();
+
+        result.fileInfo.name = fileName;
+      }
+
+      return result;
+    })
+    .catch((err) => {
+      console.log(err);
+      if (!result) {
+        throw err;
+      } else if (!result.fileInfo) {
+        throw {
+          code: 2,
+          message: 'Can\'t access to requested link',
+          result: result,
+          rp: err
+        };
+      }
+
+    })
+}
+
 module.exports = shortener;
+module.exports.extra = extra;
 module.exports.setUser = setUser;
