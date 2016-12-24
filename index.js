@@ -4,7 +4,15 @@ const url = require('url');
 
 let API_URL = 'http://opizo.com/webservice/shrink';
 
- let username = process.env.OPIZO_USERNAME || '';
+/**
+ * Add opizo.com username as environment varialbe or
+ * set it with setUser function
+ */
+let username = process.env.OPIZO_USERNAME || '';
+
+function setUser (user = '') {
+  username = user;
+}
 
 function shortLink(link) {
   let result = {
@@ -63,3 +71,4 @@ function shortLink(link) {
 }
 
 module.exports = shortLink;
+module.exports.setUser = setUser;
