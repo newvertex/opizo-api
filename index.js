@@ -32,7 +32,17 @@ function shortLink(link) {
         result.shortUrl = body;
         return rp.head(link);
       } else {
-        throw `Server Error: ${body}`;
+        let msg = '';
+
+        if (body === '101') {
+          msg = 'Address has not been sent';
+        } else if (body === '102') {
+          msg = 'Username has not been sent';
+        } else if (body === '103') {
+          msg = 'Address is not correct';
+        }
+
+        throw { code: body, message: msg };
       }
     }).then(header => {
       if (typeof(header['content-length']) !== 'undefined') {
