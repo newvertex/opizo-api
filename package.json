@@ -1,0 +1,28 @@
+{
+  "name": "opizo-api",
+  "version": "0.0.1",
+  "description": "opizo shortener api module for node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newvertex/opizo-api.git"
+  },
+  "keywords": [
+    "opizo",
+    "shortener"
+  ],
+  "author": "Mojtaba Rabiei <mojtaba.r127@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/newvertex/opizo-api/issues"
+  },
+  "homepage": "https://github.com/newvertex/opizo-api#readme",
+  "dependencies": {
+    "prettysize": "0.0.3",
+    "request": "^2.79.0",
+    "request-promise-native": "^1.0.3"
+  }
+}
