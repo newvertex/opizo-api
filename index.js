@@ -10,15 +10,31 @@ let API_URL = 'http://opizo.com/webservice/shrink';
  */
 let username = process.env.OPIZO_USERNAME || '';
 
+// Set opizo username
 function setUser (user = '') {
   username = user;
 }
 
-function shortLink(link) {
+// Check opizo server error code and return it with equal message
+function serverErr(code) {
+  let msg = '';
+
+  if (code === '101') {
+    msg = 'Address has not been sent';
+  } else if (code === '102') {
+    msg = 'Username has not been sent';
+  } else if (code === '103') {
+    msg = 'Address is not correct';
+  }
+
+  return { 'code': code, 'message': msg };
+}
+
+// Request to get short url with promise and return promise
+function shortener(link) {
   let result = {
     url: link,
-    shortUrl: null,
-    fileInfo: null
+    shortUrl: null
   };
 
   return rp.post(API_URL, {
@@ -30,34 +46,10 @@ function shortLink(link) {
     .then(body => {
       if (body.length > 5) {
         result.shortUrl = body;
-        return rp.head(link);
+        return result;
       } else {
-        let msg = '';
-
-        if (body === '101') {
-          msg = 'Address has not been sent';
-        } else if (body === '102') {
-          msg = 'Username has not been sent';
-        } else if (body === '103') {
-          msg = 'Address is not correct';
-        }
-
-        throw { code: body, message: msg };
+        throw serverErr(body);
       }
-    }).then(header => {
-      if (typeof(header['content-length']) !== 'undefined') {
-        result.fileInfo = {};
-        result.fileInfo.contentLength = header['content-length'];
-        result.fileInfo.sizeInMB = pretty(result.fileInfo.contentLength);
-
-        const parsedUrl = url.parse(link);
-        const fileName = parsedUrl.path.replace(parsedUrl.search, '')
-          .split('/').pop();
-
-        result.fileInfo.name = fileName;
-      }
-
-      return result;
     })
     .catch(err => {
       if (!result.shortUrl) {
@@ -68,17 +60,8 @@ function shortLink(link) {
           rp: err
         };
       }
-
-      if (!result.fileInfo) {
-        throw {
-          code: 2,
-          message: 'Can\'t access to requested link',
-          result: result,
-          rp: err
-        };
-      }
     });
 }
 
-module.exports = shortLink;
+module.exports = shortener;
 module.exports.setUser = setUser;
