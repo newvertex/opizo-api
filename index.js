@@ -65,6 +65,7 @@ function shortener(link) {
     });
 }
 
+// Extra function to request short url and file info(file name, file size)
 function extra(link) {
   let result = null;
 

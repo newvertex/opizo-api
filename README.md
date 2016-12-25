@@ -1,7 +1,11 @@
 # opizo-api
 [![NPM](https://nodei.co/npm/opizo-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/opizo-api/)  
 
-opizo shortener api module for node.js, use promises to make all request
+ opizo.com shortener api module for node.js. (client)  
+ All functions return a promise  
+
+[Persian version of readme](http://newvertex.blog.ir/post/%D8%A7%D9%86%D8%AA%D8%B4%D8%A7%D8%B1-%D9%85%D8%A7%DA%98%D9%88%D9%84-opizo-api-%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D9%87-%D8%B1%D8%A7%D8%AD%D8%AA-%D8%AA%D8%B1-%D8%A7%D8%B2-%D8%B3%D8%A7%DB%8C%D8%AA-%DA%A9%D9%88%D8%AA%D8%A7%D9%87-%DA%A9%D9%86%D9%86%D8%AF%D9%87-%DB%8C-%D9%84%DB%8C%D9%86%DA%A9-%D8%A7%D9%BE%DB%8C%D8%B2%D9%88-%D8%AF%D8%B1-Node-js)
+
 ## Installation
 with npm:
 ```bash
